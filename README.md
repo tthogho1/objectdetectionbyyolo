@@ -1,3 +1,12 @@
+---
+title: Yolo Wasm App
+emoji: 🦀
+colorFrom: yellow
+colorTo: red
+sdk: docker
+app_port: 7860
+---
+
 # YOLOv8 WASM Object Detection
 
 This project demonstrates real-time object detection using YOLOv8n running in the browser via WebAssembly (Rust + Candle).
