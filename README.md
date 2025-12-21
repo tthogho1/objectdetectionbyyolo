@@ -1,6 +1,6 @@
 ---
 title: Yolo Wasm App
-emoji: 
+emoji: 🦀
 colorFrom: yellow
 colorTo: red
 sdk: docker
@@ -25,36 +25,38 @@ This project demonstrates real-time object detection using YOLOv8n running in th
     You can download it from: https://huggingface.co/lmz/candle-yolo-v8/resolve/main/yolov8n.safetensors
 
     `ash
+
     # Example using curl
+
     curl -L -o web/public/yolov8n.safetensors https://huggingface.co/lmz/candle-yolo-v8/resolve/main/yolov8n.safetensors
     `
 
 2.  **Build Rust WASM**
 
     `ash
-    cd rust
-    wasm-pack build --target web --out-dir ../web/pkg
-    `
+cd rust
+wasm-pack build --target web --out-dir ../web/pkg
+`
 
 3.  **Install Web Dependencies**
 
     `ash
-    cd web
-    npm install
-    `
+cd web
+npm install
+`
 
 4.  **Run Development Server**
 
     `ash
-    npm run dev
-    `
+npm run dev
+`
 
 5.  **Open in Browser**
     Open http://localhost:5173 (or the URL shown in the terminal).
 
 ## Project Structure
 
-- ust/: Rust source code for WASM module (YOLOv8 inference using Candle)
+- ust/: Rust source code for WASM module (YOLOv8 inference using Candle)
 - web/: React application (Vite) for UI and camera handling
 
 ## Notes
