@@ -6,7 +6,7 @@ mod yolo;
 
 static mut MODEL: Option<yolo::YoloV8> = None;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Detection {
     pub bbox: [f32; 4],  // x1, y1, x2, y2 (normalized 0-1)
     pub label: String,
@@ -16,6 +16,8 @@ pub struct Detection {
 #[wasm_bindgen]
 pub async fn init(model_path: &str) -> Result<(), JsValue> {
     console_error_panic_hook::set_once();
+    web_sys::console::log_1(&JsValue::from_str(&format!("[init] model_path: {}", model_path)));
+    web_sys::console::log_1(&JsValue::from_str("[init] Fetching model..."));
     
     let global = js_sys::global();
     let resp_value = if let Ok(window) = global.clone().dyn_into::<web_sys::Window>() {
@@ -23,16 +25,24 @@ pub async fn init(model_path: &str) -> Result<(), JsValue> {
     } else if let Ok(worker) = global.dyn_into::<web_sys::WorkerGlobalScope>() {
         wasm_bindgen_futures::JsFuture::from(worker.fetch_with_str(model_path)).await?
     } else {
+        web_sys::console::log_1(&JsValue::from_str(&format!("[init:Err] model_path: {}", model_path)));
+        web_sys::console::log_1(&JsValue::from_str("[init] No window or worker global scope"));
         return Err(JsValue::from_str("No window or worker global scope"));
     };
 
+    web_sys::console::log_1(&JsValue::from_str("[init] Model fetched, reading array buffer..."));
     let resp: web_sys::Response = resp_value.dyn_into()?;
     let data = wasm_bindgen_futures::JsFuture::from(resp.array_buffer()?).await?;
     let bytes = js_sys::Uint8Array::new(&data).to_vec();
 
-    let model = yolo::YoloV8::new(&bytes).await
-        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+    web_sys::console::log_1(&JsValue::from_str("[init] Loading model..."));
+    let model = yolo::YoloV8::load(&bytes)
+        .map_err(|e| {
+            web_sys::console::log_1(&JsValue::from_str(&format!("[init:Err] model load failed: {}", e)));
+            JsValue::from_str(&e.to_string())
+        })?;
     unsafe { MODEL = Some(model); }
+    web_sys::console::log_1(&JsValue::from_str("[init] Model loaded successfully."));
     Ok(())
 }
 
