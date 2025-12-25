@@ -7,8 +7,9 @@
 
 .camera-wrapper {
   position: relative;
-  width: 640px;
-  height: 480px;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 4 / 3;
   margin: 0 auto;
   background-color: #000;
   border-radius: 8px;
@@ -33,4 +34,10 @@
   margin: 5px 0;
   padding: 5px 10px;
   border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
 }

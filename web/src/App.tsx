@@ -19,8 +19,8 @@ function App() {
               position: 'absolute',
               top: 0,
               left: 0,
-              width: 640,
-              height: 480,
+              width: '100%',
+              height: '100%',
               pointerEvents: 'none',
             }}
           >

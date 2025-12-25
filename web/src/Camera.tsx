@@ -86,7 +86,10 @@ const Camera: React.FC<{ onDetections: (detections: Detection[]) => void }> = ({
   }, []);
 
   return (
-    <div className="camera-container" style={{ position: 'relative', width: 640, height: 480 }}>
+    <div
+      className="camera-container"
+      style={{ position: 'relative', width: '100%', height: '100%' }}
+    >
       <video
         ref={videoRef}
         autoPlay
